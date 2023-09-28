@@ -1,0 +1,48 @@
+* Install Azure CLI
+    az login
+* Install terraform
+
+* Create a service principal for working with terraform
+    az ad sp create-for-rbac --name <service_principal_name> --role Contributor --scopes /subscriptions/<subscription_id>
+
+    az ad sp create-for-rbac --name naga --role  Contributor --scopes /Subscriptions/46f8a75c-acb9-4cac-9a0d-8b975291a1d4
+
+    Set your environment variables from the output:
+    {
+    "appId": "<client id>",
+    "displayName": "naga",
+    "password": "<password>",
+    "tenant": "<tenant id>"
+    }
+
+    export ARM_SUBSCRIPTION_ID="<subscription id>"
+    export ARM_TENANT_ID="<tenant id>"
+    export ARM_CLIENT_ID="<client id>"
+    export ARM_CLIENT_SECRET="<password>"
+
+
+* Run terraform
+
+terraform init -upgrade
+terraform plan -out main.tfplan
+terraform apply "main.tfplan"  
+
+
+* Set up kubectl
+#echo "$(terraform output kube_config)" | grep -v "EOT" > ./azurek8s
+#export KUBECONFIG=~/IdeaProjects/terraform-microsoft-azure/naga/azurek8s
+
+az aks get-credentials --resource-group tf-demo-rg --name tf-demo-cluster
+
+########################
+# Grpc Prices App
+########################
+kubectl get ns
+
+kubectl create namespace grpc-demo
+
+kubectl get pods -n grpc-demo
+kubectl get pod,svc -n grpc-demo
+
+kubectl apply -f kubectl/deployment-grpc-prices-pod-svc.yaml --namespace grpc-demo
+
