@@ -2,3 +2,4 @@ demo/.terraform
 demo/.terraform.lock.hcl
 demo/main.tfplan
 demo/terraform.tfstate
+demo/terraform.tfstate.backup
