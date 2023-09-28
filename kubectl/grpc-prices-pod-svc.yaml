@@ -1,0 +1,23 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: grpc-prices-app
+  labels:
+    app: grpc-prices
+spec:
+  containers:
+    - name: grpc-prices
+      image: nagakaravadi/grpcprices-cop:v2
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: grpc-prices-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: grpc-prices
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8999

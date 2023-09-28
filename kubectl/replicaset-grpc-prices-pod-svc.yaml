@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: grpc-prices-rs
+  labels:
+    app: grpc-prices
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: grpc-prices
+  template:
+    metadata:
+      labels:
+        app: grpc-prices
+    spec:
+      containers:
+        - name: grpc-prices
+          image: nagakaravadi/grpcprices-cop:v2
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: grpc-prices-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: grpc-prices
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8999
